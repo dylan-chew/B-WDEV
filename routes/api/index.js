@@ -1,13 +1,13 @@
 const express = require('express');
 const router = express.Router();
-const songsRouter = require('./songs');
+const filmRouter = require('./film');
 
-//hook up the songs router
-router.use('/songs', songsRouter)
+//hook up the film router
+router.use('/film', filmRouter)
 
 //    api/ is assumed
-router.get('/', (req, res, next) =>{
-    res.send('welcome to the api!')
+router.get('/', (req, res) =>{
+    res.send('Welcome to the api!')
 })
 
 
