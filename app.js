@@ -16,6 +16,9 @@ mongoose.connect('mongodb://localhost/film', { useNewUrlParser: true, useUnified
   .then(() => console.log("Connected to Mongo..."))
   .catch(error => console.log(error));
 
+//Deprecation handling
+mongoose.set('useFindAndModify', false);
+
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'jade');

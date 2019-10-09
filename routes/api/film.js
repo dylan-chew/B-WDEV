@@ -23,21 +23,28 @@ router.get('/:_id', (req, res) => {
 //CREATE FILM
 router.post('/', (req, res) => {
     const film = new Film(req.body)
-    film.save((err, result) => {
+    film.save((err, film) => {
         if (err) return res.status(400).send('Error')
 
-        res.status(200).send(result);
+        res.status(201).send(film);
     });
 })
 
 //UPDATE FILM
+router.put('/:_id', (req, res) => {
+    Film.findByIdAndUpdate(req.params._id, req.body, { new: true }, (err, film) => {
+        if (err) return res.status(400).send('Error')
+
+        res.status(200).send(film);
+    });
+})
 
 //DELETE FILM
 router.delete('/:_id', (req, res) => {
     Film.findByIdAndRemove(req.params._id, (err, film) => {
         if (err) return res.status(400).send('Error')
 
-        res.status(204).send()
+        res.status(204).send();
     });
 })
 
