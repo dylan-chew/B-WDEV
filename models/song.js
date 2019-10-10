@@ -3,7 +3,10 @@ const Schema = mongoose.Schema;
 
 //define the schema
 const songSchema = new Schema({
-    title: String,
+    title: {
+        type: String,
+        required: true
+    },
     artist: String,
     releaseYear: Number,
     rating: Number,

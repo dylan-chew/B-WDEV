@@ -4,12 +4,16 @@ var path = require('path');
 var cookieParser = require('cookie-parser');
 var logger = require('morgan');
 var mongoose = require('mongoose');
+var dotenv = require('dotenv');
 
 var indexRouter = require('./routes/index');
 var usersRouter = require('./routes/users');
 var apiRouter = require('./routes/api'); //index.js
 
 var app = express();
+
+//Load in custom env variables
+dotenv.config();
 
 //Establish connection to Mongo
 mongoose.connect('mongodb://localhost/film', { useNewUrlParser: true, useUnifiedTopology: true })

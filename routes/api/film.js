@@ -4,6 +4,10 @@ const Film = require('../../models/film')
 
 //GET ALL FILM
 router.get('/', (req, res) => {
+    //set dummy header
+    res.header('x-auth-token', 'abc123');
+
+
     Film.find({}, (err, film) => {
         if (err) return res.status(400).send('Error');
 
@@ -16,6 +20,9 @@ router.get('/:_id', (req, res) => {
     Film.findById(req.params._id, (err, film) => {
         if (err) return res.status(400).send('Error');
 
+        //handle no film found
+        if (!film) return res.status(404).send();
+
         res.send(film);
     });
 });
@@ -24,7 +31,7 @@ router.get('/:_id', (req, res) => {
 router.post('/', (req, res) => {
     const film = new Film(req.body)
     film.save((err, film) => {
-        if (err) return res.status(400).send('Error')
+        if (err) return res.status(400).send(`Error: ${err.message}`)
 
         res.status(201).send(film);
     });
