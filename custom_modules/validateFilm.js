@@ -3,7 +3,6 @@ const joi = require('@hapi/joi');
 
 //define the schema for the recipes object
 const recipesSchema = joi.object().keys({
-    _id: joi.object(), //this is created by mongoose automatically
     developer: joi.string().max(100).required(),
     at: joi.string().max(10).required(),
     time: joi.string().max(10).required(),
@@ -18,7 +17,6 @@ const recipesSchema = joi.object().keys({
 const validateFilm = (newFilm, req) => {
     //validate new film
     const schema = joi.object({
-        //_id: joi.object().required(), //this is created by mongoose automatically
         name: joi.string().max(30).required(),
         brand: joi.string().max(30).required(),
         ISO: joi.number().required(),
