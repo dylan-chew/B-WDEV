@@ -1,6 +1,9 @@
+//Imports
 const express = require('express');
 const router = express.Router();
 const Film = require('../../models/film')
+//Import custom module for validation
+const validateFilm = require('../../custom_modules/validateFilm');
 
 //GET ALL FILM
 router.get('/', (req, res) => {
@@ -29,17 +32,31 @@ router.get('/:_id', (req, res) => {
 
 //CREATE FILM
 router.post('/', (req, res) => {
-    const film = new Film(req.body)
-    film.save((err, film) => {
+    const newFilm = new Film(req.body)
+
+    //validate new film using joi
+    const {error} = validateFilm(req.body, req);
+
+    if (error) return res.status(400).send(error.details[0].message);
+
+    newFilm.save((err, newFilm) => {
         if (err) return res.status(400).send(`Error: ${err.message}`)
 
-        res.status(201).send(film);
+        console.log(newFilm)
+        res.status(201).send(newFilm);
     });
 })
 
 //UPDATE FILM
 router.put('/:_id', (req, res) => {
-    Film.findByIdAndUpdate(req.params._id, req.body, { new: true }, (err, film) => {
+    const updateFilm = req.body
+
+    //validate new film using joi
+    const { error } = validateFilm(updateFilm, req);
+
+    if (error) return res.status(400).send(error.details[0].message);
+
+    Film.findByIdAndUpdate(req.params._id, updateFilm, { new: true }, (err, film) => {
         if (err) return res.status(400).send('Error')
 
         res.status(200).send(film);
@@ -48,7 +65,7 @@ router.put('/:_id', (req, res) => {
 
 //DELETE FILM
 router.delete('/:_id', (req, res) => {
-    Film.findByIdAndRemove(req.params._id, (err, film) => {
+    Film.findByIdAndRemove(req.params._id, (err, filmToDelete) => {
         if (err) return res.status(400).send('Error')
 
         res.status(204).send();
