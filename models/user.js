@@ -9,13 +9,16 @@ const Schema = mongoose.Schema;
 const userSchema = new Schema({
     firstName: { type: String, required: true },
     lastName: { type: String, required: true },
-    email: { type: Number, required: true },
-    password: { type: String, required: false },
-
+    email: {
+        type: String,
+        unique: true,
+        required: true,
+        lowercase: true,
+        required: [true, "can't be blank"],
+        match: [/\S+@\S+\.\S+/, 'is invalid']
     },
-    {
-        collection: 'film'
-    });
+    password: { type: String, required: true }
+});
 
 //export it as a model, give it a name (with a capital letter) and the schema it will abide by
 module.exports = mongoose.model('User', userSchema);
