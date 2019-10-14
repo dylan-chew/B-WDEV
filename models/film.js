@@ -12,7 +12,12 @@ const filmSchema = new Schema({
     recipes: [{
         developer: { type: String, required: true },
         at: { type: String, required: true },
-        time: { type: String, required: true },
+        time: {
+            type: String,
+            required: true,
+            required: [true, "can't be blank"],
+            match: [/^(?:(?:([01]?\d|2[0-3]):)?([0-5]?\d):)?([0-5]?\d)$/, 'is invalid']
+        },
         temp_fahrenheit: { type: Number, required: true },
         temp_celcius: { type: Number, required: false },
         dilution_ratio: { type: String, required: true },

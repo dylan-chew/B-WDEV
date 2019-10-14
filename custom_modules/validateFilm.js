@@ -5,7 +5,9 @@ const joi = require('@hapi/joi');
 const recipesSchema = joi.object().keys({
     developer: joi.string().max(100).required(),
     at: joi.string().max(10).required(),
-    time: joi.string().max(10).required(),
+    time: joi.string().max(10)
+    .pattern(/^(?:(?:([01]?\d|2[0-3]):)?([0-5]?\d):)?([0-5]?\d)$/).required('YO')
+    .label('Time must be in format: (HH):MM:SS'),
     temp_fahrenheit: joi.number().required(),
     temp_celcius: joi.number(),
     dilution_ratio: joi.string().max(10).required(),

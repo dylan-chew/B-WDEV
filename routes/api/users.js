@@ -3,15 +3,16 @@ const express = require('express');
 const router = express.Router();
 const User = require('../../models/user')
 const bcrypt = require('bcrypt');
+const jwt = require('jsonwebtoken');
 //Import custom module for validation
 const validateUser = require('../../custom_modules/validateUser');
-const jwt = require('jsonwebtoken');
+const validateLogin = require('../../custom_modules/validateLogin');
 
 router.post('/', (req, res) => {
     return res.status(200).send('Users API')
 })
 
-//Register new User
+//REGISTER NEW USER
 router.post('/register', (req, res) => {
     //validate new user using joi
     const { error } = validateUser(req.body, req);
@@ -47,15 +48,17 @@ router.post('/register', (req, res) => {
     })
 })
 
-//Login existing User
+//LOGIN existing User
 router.post('/login', (req, res) => {
     //ADD VALIDATION
+    const {error} = validateLogin(req.body, req);
 
-
+    if (error) return res.status(400).send(error.details[0].message);
+ 
     User.findOne({ email: req.body.email }, (err, user) => {
         if (err) return res.status(400).send('Error');
         //handle no user found
-        if (!user) return res.status(404).send();
+        if (!user) return res.status(404).send('Error: No User Found');
 
         //see if posted password matches bcrypt hashing
         bcrypt.compare(req.body.password, user.password, (err, isMatch) => {
