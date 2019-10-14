@@ -22,6 +22,7 @@ mongoose.connect('mongodb://localhost/film', { useNewUrlParser: true, useUnified
 
 //Deprecation handling
 mongoose.set('useFindAndModify', false);
+mongoose.set('useCreateIndex', true);
 
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));

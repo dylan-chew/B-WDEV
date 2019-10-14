@@ -7,10 +7,6 @@ const validateFilm = require('../../custom_modules/validateFilm');
 
 //GET ALL FILM
 router.get('/', (req, res) => {
-    //set dummy header
-    res.header('x-auth-token', 'abc123');
-
-
     Film.find({}, (err, film) => {
         if (err) return res.status(400).send('Error');
 
