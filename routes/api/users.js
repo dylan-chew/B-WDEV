@@ -14,8 +14,17 @@ router.post('/', (req, res) => {
 
 //REGISTER NEW USER
 router.post('/register', (req, res) => {
+    // //Grab list of current emails in DB to test against in joi
+    // User.find({ email: req.body.email }, (err, users) => {
+    //     let array = []
+    //     users.forEach(user => {
+
+    //         array.push(user.email)
+    //     })
+    // });
+
     //validate new user using joi
-    const { error } = validateUser(req.body, req);
+    const { error } = validateUser(req.body, req, currentUserEmails);
 
     if (error) return res.status(400).send(error.details[0].message);
 
@@ -67,8 +76,7 @@ router.post('/login', (req, res) => {
             if (!isMatch) return res.status(400).send(`Error: Incorrect Password!`)
 
             //get JWT and add it to header
-            jwt.sign({ user: user.firstName + user.lastName }, process.env.JWT_SECRET, (err, token) => {
-                console.log(token);
+            jwt.sign({ user: user.firstName + user.lastName }, process.env.JWT_SECRET, { expiresIn: '1h' }, (err, token) => {
                 res.header('x-auth-token', token);
 
                 res.status(200).send('Successfully Logged In');

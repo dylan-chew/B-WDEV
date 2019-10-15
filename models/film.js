@@ -10,6 +10,7 @@ const filmSchema = new Schema({
     formats: { type: [String], required: true },
     process: { type: [String], required: true },
     recipes: [{
+        _id: false,
         developer: { type: String, required: true },
         at: { type: String, required: true },
         time: {
@@ -29,7 +30,8 @@ const filmSchema = new Schema({
     image_path: { type: String, required: false }
 },
     {
-        collection: 'film'
+        collection: 'film',
+        versionKey: false
     });
 
 //export it as a model, give it a name (with a capital letter) and the schema it will abide by

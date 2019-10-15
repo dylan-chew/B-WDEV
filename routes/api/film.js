@@ -4,6 +4,9 @@ const router = express.Router();
 const Film = require('../../models/film')
 //Import custom module for validation
 const validateFilm = require('../../custom_modules/validateFilm');
+//Import the middleware
+const verifyJwt = require('../../middleware/verifyJwt');
+
 
 //GET ALL FILM
 router.get('/', (req, res) => {
@@ -27,11 +30,11 @@ router.get('/:_id', (req, res) => {
 });
 
 //CREATE FILM
-router.post('/', (req, res) => {
+router.post('/', verifyJwt, (req, res) => {
     const newFilm = new Film(req.body)
 
     //validate new film using joi
-    const {error} = validateFilm(req.body, req);
+    const { error } = validateFilm(req.body, req);
 
     if (error) return res.status(400).send(error.details[0].message);
 
@@ -44,7 +47,7 @@ router.post('/', (req, res) => {
 })
 
 //UPDATE FILM
-router.put('/:_id', (req, res) => {
+router.put('/:_id', verifyJwt, (req, res) => {
     const updateFilm = req.body
 
     //validate new film using joi
@@ -60,7 +63,7 @@ router.put('/:_id', (req, res) => {
 })
 
 //DELETE FILM
-router.delete('/:_id', (req, res) => {
+router.delete('/:_id', verifyJwt, (req, res) => {
     Film.findByIdAndRemove(req.params._id, (err, filmToDelete) => {
         if (err) return res.status(400).send('Error')
 
