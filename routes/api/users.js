@@ -24,7 +24,7 @@ router.post('/register', (req, res) => {
     // });
 
     //validate new user using joi
-    const { error } = validateUser(req.body, req, currentUserEmails);
+    const { error } = validateUser(req.body);
 
     if (error) return res.status(400).send(error.details[0].message);
 
@@ -77,9 +77,10 @@ router.post('/login', (req, res) => {
 
             //get JWT and add it to header
             jwt.sign({ user: user.firstName + user.lastName }, process.env.JWT_SECRET, { expiresIn: '1h' }, (err, token) => {
+                res.header('Access-Control-Expose-Headers', '*')
                 res.header('x-auth-token', token);
 
-                res.status(200).send('Successfully Logged In');
+                res.send('Successfully Logged In');
             });
         })
     });

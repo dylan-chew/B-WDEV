@@ -58,6 +58,8 @@ router.put('/:_id', verifyJwt, (req, res) => {
     Film.findByIdAndUpdate(req.params._id, updateFilm, { new: true }, (err, film) => {
         if (err) return res.status(400).send('Error')
 
+        if(!film) return res.status(404).send();
+
         res.status(200).send(film);
     });
 })
@@ -66,6 +68,8 @@ router.put('/:_id', verifyJwt, (req, res) => {
 router.delete('/:_id', verifyJwt, (req, res) => {
     Film.findByIdAndRemove(req.params._id, (err, filmToDelete) => {
         if (err) return res.status(400).send('Error')
+
+        if(!filmToDelete) return res.status(404).send();
 
         res.status(204).send();
     });

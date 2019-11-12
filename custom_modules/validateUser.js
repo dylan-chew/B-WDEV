@@ -5,7 +5,7 @@ const joi = require('@hapi/joi');
 // •	lastName – required, maximum length 100 characters.
 // •	email – required, must be unique, must be a valid email address.
 // •	password – required, maximum length 255 characters.
-const validateUser = (user, req) => {
+const validateUser = (user) => {
     //validate new film
     const schema = joi.object({
         firstName: joi.string().max(100).required(),
