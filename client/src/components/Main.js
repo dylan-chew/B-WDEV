@@ -1,6 +1,7 @@
 import React from 'react';
 import '../css/main.css'
 import 'font-awesome/css/font-awesome.min.css';
+import Card from './Card';
 
 class Main extends React.Component {
   constructor(props) {
@@ -21,34 +22,16 @@ class Main extends React.Component {
       .catch(err => console.error('Caught error: ', err))
   }
 
-  generateCards() {
+  renderCards() {
     return this.state.film.map((film, i) => {
       return (
-        <div className="col-md-3">
-          <div className="card mb-4 box-shadow">
-            <img
-              className="card-img-top"
-              data-src="holder.js/100px225?theme=thumb&amp;bg=55595c&amp;fg=eceeef&amp;text=Thumbnail"
-              alt="Thumbnail [100%x225]"
-              style={{ width: '100%', display: 'block' }}
-              src={film.image_path}
-              data-holder-rendered="true" />
-            <div className="card-body">
-              <h2 className="card-text">{film.name}</h2>
-              <h3 className="card-text">Brand: {film.brand}</h3>
-              <h3 className="card-text">ISO: {film.ISO}</h3>
-
-              <div className="d-flex justify-content-between align-items-center">
-                <div className="btn-group">
-                  <button type="button" className="btn btn-sm btn-outline-secondary">View</button>
-                  <button type="button" className="btn btn-sm btn-outline-secondary">Edit</button>
-                  <button type="button" className="btn btn-sm btn-outline-secondary">Delete</button>
-                </div>
-                <small className="text-muted">blah</small>
-              </div>
-            </div>
-          </div>
-        </div>
+        <Card
+          key={i}
+          name={film.name}
+          brand={film.brand}
+          iso={film.ISO}
+          imgPath={film.image_path}
+        />
       )
     })
   }
@@ -75,7 +58,7 @@ class Main extends React.Component {
         <div className="album py-5 bg-light">
           <div className="container">
             <div className="row">
-              {this.generateCards()}
+              {this.renderCards()}
             </div>
           </div>
         </div>
