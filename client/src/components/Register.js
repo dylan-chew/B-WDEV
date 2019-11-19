@@ -9,6 +9,8 @@ class SignIn extends React.Component {
         super(props)
 
         this.state = {
+            firstName: "",
+            lastName: "",
             email: "",
             password: ""
         }
@@ -17,11 +19,9 @@ class SignIn extends React.Component {
     handleSubmit = (e) => {
         e.preventDefault();
 
-        Axios.post('http://localhost:8080/api/users/login', this.state)
+        Axios.post('http://localhost:8080/api/users/register', this.state)
         .then(response => {
-            console.log(response)
-
-            if(response.status ===200){
+            if(response.status ===201){
                 //set the JWT in my app (localstorage, cookie, variable)
                  console.log(response.headers['x-auth-token'])
                 localStorage.setItem("JWT", response.headers['x-auth-token']);
@@ -43,10 +43,27 @@ class SignIn extends React.Component {
     }
 
     render() {
-        console.log(this.props)
         return (
             <form onSubmit={this.handleSubmit} className="form-signin">
-                <h1 className="h3 mb-3 font-weight-normal text-center">Please sign in</h1>
+                <h1 className="h3 mb-3 font-weight-normal text-center">Register new account</h1>
+                <label htmlFor="inputFirstName" className="sr-only">First Name</label>
+                <input 
+                type="text" 
+                name='firstName'
+                id="inputFirstName" 
+                className="form-control" 
+                placeholder="First name" 
+                onChange={this.handleChange}
+                autoFocus />
+                <label htmlFor="inputLastName" className="sr-only">Last Name</label>
+                <input 
+                onChange={this.handleChange} 
+                type="text" 
+                name='lastName'
+                id="inputLastName" 
+                className="form-control" 
+                placeholder="Last name" 
+                required />
                 <label htmlFor="inputEmail" className="sr-only">Email address</label>
                 <input 
                 type="email" 
@@ -67,7 +84,7 @@ class SignIn extends React.Component {
                 required />
                 <button
                     className="btn btn-lg btn-primary btn-block"
-                    type="submit">Sign in</button>
+                    type="submit">Sign up</button>
             </form>
         );
     }

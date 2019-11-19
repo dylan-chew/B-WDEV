@@ -13,7 +13,7 @@ class Main extends React.Component {
 
   componentDidMount() {
     //grab some data
-    fetch('http://localhost:8000/api/film')
+    fetch('http://localhost:8080/api/film')
       .then(response => response.json())
       .then(data =>
         this.setState({

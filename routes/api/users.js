@@ -51,7 +51,12 @@ router.post('/register', (req, res) => {
                     email: newUserBcrptyed.email
                 }
 
-                res.status(201).send(returnJson);
+                jwt.sign({ newUser: newUser.firstName + newUser.lastName }, process.env.JWT_SECRET, { expiresIn: '1h' }, (err, token) => {
+                    res.header('Access-Control-Expose-Headers', '*')
+                    res.header('x-auth-token', token);
+    
+                    res.status(201).send(returnJson);
+                });
             });
         })
     })

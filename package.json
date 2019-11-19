@@ -5,7 +5,8 @@
   "scripts": {
     "server": "nodemon ./bin/www",
     "client": "cd client && npm start",
-    "start": "concurrently --kill-others-on-fail \"npm run server\" \"npm run client\""
+    "dev": "concurrently --kill-others-on-fail \"npm run server\" \"npm run client\"",
+    "start": "node ./bin/www"
   },
   "dependencies": {
     "@hapi/joi": "^16.1.7",
