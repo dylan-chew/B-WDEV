@@ -19,7 +19,7 @@ class SignIn extends React.Component {
     handleSubmit = (e) => {
         e.preventDefault();
 
-        Axios.post('http://localhost:8080/api/users/register', this.state)
+        Axios.post(`${process.env.REACT_APP_API_URI}/users/register`, this.state)
         .then(response => {
             if(response.status ===201){
                 //set the JWT in my app (localstorage, cookie, variable)

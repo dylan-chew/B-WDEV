@@ -17,7 +17,7 @@ class SignIn extends React.Component {
     handleSubmit = (e) => {
         e.preventDefault();
 
-        Axios.post('http://localhost:8080/api/users/login', this.state)
+        Axios.post(`${process.env.REACT_APP_API_URI}/users/login`, this.state)
         .then(response => {
             console.log(response)
 
