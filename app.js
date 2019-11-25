@@ -42,6 +42,13 @@ app.use('/', indexRouter);
 app.use('/users', usersRouter);
 app.use('/api', apiRouter);
 
+//For routing
+if(process.env.NODE_ENV === 'production'){
+  app.get('*', (req,res) =>{
+     res.sendFile(path.join(__dirname+'/client/build/index.html'));
+  });
+}
+
 // catch 404 and forward to error handler
 app.use(function (req, res, next) {
   next(createError(404));
@@ -58,8 +65,5 @@ app.use(function (err, req, res, next) {
   res.render('error');
 });
 
-app.get('*', (req, res) => {
-  res.sendFile(path.join(__dirname, '/client/build/index.html'));
-});
 
 module.exports = app;
