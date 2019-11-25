@@ -30,7 +30,7 @@ router.get('/:_id', (req, res) => {
 });
 
 //CREATE FILM
-router.post('/', verifyJwt, (req, res) => {
+router.post('/',  (req, res) => {
     const newFilm = new Film(req.body)
 
     //validate new film using joi

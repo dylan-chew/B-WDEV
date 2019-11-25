@@ -23,8 +23,8 @@ const validateFilm = (newFilm, req) => {
         brand: joi.string().max(30).required(),
         ISO: joi.number().required(),
         type: joi.string().max(100),
-        process: joi.array().items(joi.string()).required(),
-        formats: joi.array().items(joi.string().valid('35mm', '120', '8x10 in', '620', '4x5 in', 'bulk')).required(),
+        process: joi.array().items(joi.string()),
+        formats: joi.array().items(joi.string().valid('35mm', '120', '8x10 in', '620', '4x5 in', 'bulk')),
         recipes: joi.array().items(recipesSchema),
         in_production: joi.bool().allow(null),
         image_path: joi.string().allow(null)

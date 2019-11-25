@@ -7,8 +7,8 @@ const filmSchema = new Schema({
     brand: { type: String, required: true },
     ISO: { type: Number, required: true },
     type: { type: String, required: false },
-    formats: { type: [String], required: true },
-    process: { type: [String], required: true },
+    formats: { type: [String], required: false },
+    process: { type: [String], required: false },
     recipes: [{
         _id: false,
         developer: { type: String, required: true },

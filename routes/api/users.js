@@ -51,7 +51,7 @@ router.post('/register', (req, res) => {
                     email: newUserBcrptyed.email
                 }
 
-                jwt.sign({ newUser: newUser.firstName + newUser.lastName }, process.env.JWT_SECRET, { expiresIn: '1h' }, (err, token) => {
+                jwt.sign({ newUser: newUser.firstName + newUser.lastName }, process.env.JWT_SECRET, { expiresIn: '24h' }, (err, token) => {
                     res.header('Access-Control-Expose-Headers', '*')
                     res.header('x-auth-token', token);
     

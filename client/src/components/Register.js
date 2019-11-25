@@ -2,6 +2,7 @@ import React from 'react';
 import '../css/signin.css';
 import Axios from 'axios';
 //import {Redirect} from 'react-router-dom';
+import auth from '../services/auth';
 
 
 class SignIn extends React.Component {
@@ -22,13 +23,9 @@ class SignIn extends React.Component {
         Axios.post(`${process.env.REACT_APP_API_URI}/users/register`, this.state)
         .then(response => {
             if(response.status ===201){
-                //set the JWT in my app (localstorage, cookie, variable)
-                 console.log(response.headers['x-auth-token'])
-                localStorage.setItem("JWT", response.headers['x-auth-token']);
-
-                //redirect somewhere
-                //console.log(this.props)
-                return this.props.history.push('/');
+                auth.register(() => {
+                    this.props.history.push("/");
+                  }, response);
             }
         })
         .catch(err => console.log(err))
