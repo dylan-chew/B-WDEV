@@ -6,6 +6,11 @@ const Film = require('../../models/film')
 const validateFilm = require('../../custom_modules/validateFilm');
 //Import the middleware
 const verifyJwt = require('../../middleware/verifyJwt');
+const cors = require('cors')
+
+router.options('/', (req, res) => {
+    console.log('hello')
+});
 
 
 //GET ALL FILM
@@ -30,9 +35,10 @@ router.get('/:_id', (req, res) => {
 });
 
 //CREATE FILM
-router.post('/',  (req, res) => {
+router.post('/', verifyJwt, (req, res) => {
     const newFilm = new Film(req.body)
 
+    console.log(req.body)
     //validate new film using joi
     const { error } = validateFilm(req.body, req);
 

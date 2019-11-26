@@ -19,14 +19,15 @@ class CreateForm extends React.Component {
   handleSubmit = e => {
     e.preventDefault();
 
-    let headers = {
-      "Content-Type": 'application / json',
-      "x-auth-token": localStorage.getItem("JWT")
+    let config = {
+      headers: {
+        "x-auth-token": localStorage.getItem("JWT")
+      }
     };
 
-    console.log(headers)
+    console.log(localStorage.getItem("JWT"))
 
-    Axios.post(`${process.env.REACT_APP_API_URI}/film`, this.state, headers)
+    Axios.post(`${process.env.REACT_APP_API_URI}/film`, this.state, config)
       .then(response => {
         if (response.status === 201) {
           //redirect somewhere
