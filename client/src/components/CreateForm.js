@@ -1,8 +1,6 @@
 import React from "react";
 import "../css/signin.css";
 import Axios from "axios";
-//import {Redirect} from 'react-router-dom';
-import auth from "../services/auth";
 
 class CreateForm extends React.Component {
   constructor(props) {

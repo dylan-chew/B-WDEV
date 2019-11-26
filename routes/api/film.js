@@ -6,11 +6,6 @@ const Film = require('../../models/film')
 const validateFilm = require('../../custom_modules/validateFilm');
 //Import the middleware
 const verifyJwt = require('../../middleware/verifyJwt');
-const cors = require('cors')
-
-router.options('/', (req, res) => {
-    console.log('hello')
-});
 
 
 //GET ALL FILM

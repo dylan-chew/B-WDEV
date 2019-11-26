@@ -1,7 +1,5 @@
 import React from "react";
 import "../css/signin.css";
-import Axios from "axios";
-//import {Redirect} from 'react-router-dom';
 import auth from "../services/auth";
 import Joi from "joi-browser";
 
@@ -19,8 +17,13 @@ class SignIn extends React.Component {
   }
 
   schema = {
-    email: Joi.string().email().required().label("Email Address"),
-    password: Joi.string().required().label('Password')
+    email: Joi.string()
+      .email()
+      .required()
+      .label("Email Address"),
+    password: Joi.string()
+      .required()
+      .label("Password")
   };
 
   validate = () => {
@@ -54,26 +57,15 @@ class SignIn extends React.Component {
     this.setState({ errors: errors || {} });
     if (errors) return; //abort the submit
 
-    Axios.post(
-      `${process.env.REACT_APP_API_URI}/users/login`,
-      this.state.credentials
-    )
-      .then(response => {
-        if (response.status === 200) {
-          //redirect somewhere
-          auth.login(() => {
-            this.props.history.push("/");
-          }, response);
+    auth.login(this.state.credentials, (err, response) => {
+      if (err) return console.log(err);
 
-          //Old way
-          // return this.props.history.push('/');
-        }
-      })
-      .catch(err => console.log(err));
+      this.props.history.push("/");
+    });
   };
 
   handleChange = e => {
-    this.setState({errors: {}})
+    this.setState({ errors: {} });
 
     const { name, value } = e.target;
 
@@ -121,11 +113,9 @@ class SignIn extends React.Component {
           {Object.keys(this.state.errors).length > 0 && (
             <div className="alert alert-danger">
               <ul>
-                <li>
-                  {Object.keys(this.state.errors).map((key, i) => {
-                    return <li key={i}>{this.state.errors[key]}</li>;
-                  })}
-                </li>
+                {Object.keys(this.state.errors).map((key, i) => {
+                  return <li key={i}>{this.state.errors[key]}</li>;
+                })}
               </ul>
             </div>
           )}
