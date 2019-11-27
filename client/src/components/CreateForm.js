@@ -1,21 +1,69 @@
 import React from "react";
 import "../css/signin.css";
 import Axios from "axios";
+import Joi from "joi-browser";
 
 class CreateForm extends React.Component {
   constructor(props) {
     super(props);
 
     this.state = {
-      name: "",
-      brand: "",
-      ISO: "",
-      image_path: ""
+      filmAttr: {
+        name: "",
+        brand: "",
+        ISO: "",
+        image_path: ""
+      },
+      errors: {}
     };
   }
 
+  schema = {
+    name: Joi.string()
+      .required()
+      .label("Film Name"),
+    brand: Joi.string()
+      .required()
+      .label("Film Brand"),
+    ISO: Joi.number()
+      .integer()
+      .positive()
+      .required()
+      .label("ISO"),
+    image_path: Joi.string()
+      .required()
+      .uri()
+      .label("Image Source")
+  };
+
+  validate = () => {
+    const { error } = Joi.validate(this.state.filmAttr, this.schema, {
+      abortEarly: false
+    });
+    //console.log(result);
+    if (!error) return null;
+
+    //return errors object
+    const errors = {};
+    error.details.forEach(detail => {
+      //add the key if it doesn't exist
+      if (!errors.hasOwnProperty(detail.path)) {
+        errors[detail.path] = detail.message;
+      }
+    });
+
+    console.log(errors);
+
+    return errors;
+  };
+
   handleSubmit = e => {
     e.preventDefault();
+
+    //validate
+    const errors = this.validate();
+    this.setState({ errors: errors || {} });
+    if (errors) return; //abort the submit
 
     let config = {
       headers: {
@@ -23,9 +71,7 @@ class CreateForm extends React.Component {
       }
     };
 
-    console.log(localStorage.getItem("JWT"))
-
-    Axios.post(`${process.env.REACT_APP_API_URI}/film`, this.state, config)
+    Axios.post(`${process.env.REACT_APP_API_URI}/film`, this.state.filmAttr, config)
       .then(response => {
         if (response.status === 201) {
           //redirect somewhere
@@ -36,10 +82,15 @@ class CreateForm extends React.Component {
   };
 
   handleChange = e => {
+    this.setState({ errors: {} });
+
     const { name, value } = e.target;
 
+    const clonedAttr = { ...this.state.filmAttr };
+    clonedAttr[name] = value;
+
     this.setState({
-      [name]: value
+      filmAttr: clonedAttr
     });
   };
 
@@ -69,7 +120,6 @@ class CreateForm extends React.Component {
           id="inputBrand"
           className="form-control"
           placeholder="Brand"
-          required
         />
         <label htmlFor="inputIso" className="sr-only">
           Brand
@@ -81,7 +131,6 @@ class CreateForm extends React.Component {
           id="inputIso"
           className="form-control"
           placeholder="ISO"
-          required
         />
         <label htmlFor="inputImgUrl" className="sr-only">
           Brand
@@ -93,11 +142,19 @@ class CreateForm extends React.Component {
           id="inputImgUrl"
           className="form-control"
           placeholder="Image URL"
-          required
         />
         <button className="btn btn-lg btn-primary btn-block" type="submit">
           Create
         </button>
+        {Object.keys(this.state.errors).length > 0 && (
+          <div className="alert alert-danger">
+            <ul>
+              {Object.keys(this.state.errors).map((key, i) => {
+                return <li key={i}>{this.state.errors[key]}</li>;
+              })}
+            </ul>
+          </div>
+        )}
       </form>
     );
   }
