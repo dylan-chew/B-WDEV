@@ -1,25 +1,70 @@
 import React from "react";
 import "../css/signin.css";
-import Axios from "axios";
 //import {Redirect} from 'react-router-dom';
 import auth from "../services/auth";
+import Joi from "joi-browser";
 
 class SignIn extends React.Component {
   constructor(props) {
     super(props);
 
     this.state = {
-      firstName: "",
-      lastName: "",
-      email: "",
-      password: ""
+      credentials: {
+        firstName: "",
+        lastName: "",
+        email: "",
+        password: ""
+      },
+      errors: {}
     };
   }
+
+  schema = {
+    firstName: Joi.string()
+      .required()
+      .label("First Name"),
+    lastName: Joi.string()
+      .required()
+      .label("Last Name"),
+    email: Joi.string()
+      .email()
+      .required()
+      .label("Email Address"),
+    password: Joi.string()
+      .required()
+      .label("Password")
+  };
+
+  validate = () => {
+    const { error } = Joi.validate(this.state.credentials, this.schema, {
+      abortEarly: false
+    });
+    //console.log(result);
+    if (!error) return null;
+
+    //return errors object
+    const errors = {};
+    error.details.forEach(detail => {
+      //add the key if it doesn't exist
+      if (!errors.hasOwnProperty(detail.path)) {
+        errors[detail.path] = detail.message;
+      }
+    });
+
+    console.log(errors);
+
+    return errors;
+  };
 
   handleSubmit = e => {
     e.preventDefault();
 
-    auth.register(this.state, (err, response) => {
+    //validate
+    const errors = this.validate();
+    this.setState({ errors: errors || {} });
+    if (errors) return; //abort the submit
+
+    auth.register(this.state.credentials, (err, response) => {
       if (err) return console.log(err);
 
       this.props.history.push("/");
@@ -27,10 +72,15 @@ class SignIn extends React.Component {
   };
 
   handleChange = e => {
+    this.setState({ errors: {} });
+
     const { name, value } = e.target;
 
+    const clonedCreds = { ...this.state.credentials };
+    clonedCreds[name] = value;
+
     this.setState({
-      [name]: value
+      credentials: clonedCreds
     });
   };
 
@@ -62,13 +112,12 @@ class SignIn extends React.Component {
           id="inputLastName"
           className="form-control"
           placeholder="Last name"
-          required
         />
         <label htmlFor="inputEmail" className="sr-only">
           Email address
         </label>
         <input
-          type="email"
+          type="text"
           name="email"
           id="inputEmail"
           className="form-control"
@@ -86,11 +135,19 @@ class SignIn extends React.Component {
           id="inputPassword"
           className="form-control"
           placeholder="Password"
-          required
         />
         <button className="btn btn-lg btn-primary btn-block" type="submit">
           Sign up
         </button>
+        {Object.keys(this.state.errors).length > 0 && (
+          <div className="alert alert-danger">
+            <ul>
+              {Object.keys(this.state.errors).map((key, i) => {
+                return <li key={i}>{this.state.errors[key]}</li>;
+              })}
+            </ul>
+          </div>
+        )}
       </form>
     );
   }
