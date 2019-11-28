@@ -2,6 +2,7 @@ import React from "react";
 import "../css/main.css";
 import "font-awesome/css/font-awesome.min.css";
 import Card from "./Card";
+import Axios from "axios";
 
 class Main extends React.Component {
   constructor(props) {
@@ -23,8 +24,25 @@ class Main extends React.Component {
       .catch(err => console.error("Caught error: ", err));
   }
 
-  handleClickDelete(i) {
-    console.log(i);
+  handleClickDelete(filmId) {
+    if (window.confirm("Are you sure you want to delete?")) {
+      let config = {
+        headers: {
+          "x-auth-token": localStorage.getItem("JWT")
+        }
+      };
+      Axios.delete(`${process.env.REACT_APP_API_URI}/film/${filmId}`, config)
+        .then(response => {
+          if (response.status === 204) {
+            //film has been deleted, now remove from state and rerender
+            const newListOfFilm = this.state.film.filter(
+              item => item._id !== filmId
+            );
+            this.setState({ film: newListOfFilm });
+          }
+        })
+        .catch(err => console.log(err));
+    }
   }
 
   renderCards() {
@@ -37,7 +55,7 @@ class Main extends React.Component {
           brand={film.brand}
           iso={film.ISO}
           imgPath={film.image_path}
-          onClick={() => this.handleClickDelete(i)}
+          onClick={() => this.handleClickDelete(film._id)}
         />
       );
     });
