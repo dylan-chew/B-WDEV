@@ -5,6 +5,7 @@ import SignIn from "./components/SignIn";
 import Register from "./components/Register";
 import Footer from "./components/Footer";
 import CreateForm from "./components/CreateForm";
+import EditForm from "./components/EditForm";
 import { BrowserRouter, Switch, Route, useLocation } from "react-router-dom";
 import { ProtectedRoute } from "./components/ProtectedRoute";
 
@@ -21,6 +22,7 @@ const App = () => {
             <Route path="/register" component={Register} />
             <Route exact path="/" component={Main} />
             <ProtectedRoute path="/create" component={CreateForm} />
+            <ProtectedRoute path="/edit" component={EditForm} />
             <Route component={NoMatch} />
           </Switch>
         </BrowserRouter>

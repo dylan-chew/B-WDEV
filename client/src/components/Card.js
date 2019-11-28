@@ -1,4 +1,5 @@
 import React from "react";
+import { Link } from "react-router-dom";
 
 const Card = props => {
   return (
@@ -25,12 +26,19 @@ const Card = props => {
               >
                 View
               </button>
-              <button
-                type="button"
-                className="btn btn-sm btn-outline-secondary"
-              >
+              <Link className="btn btn-sm btn-outline-secondary"
+               to={{
+                 pathname: '/edit',
+                 filmProps: {
+                   name: props.name,
+                   brand: props.brand,
+                   ISO: props.iso,
+                   id: props.id,
+                   img_path: props.imgPath
+                 }
+               }}>
                 Edit
-              </button>
+              </Link>
               <button
                 onClick={props.onClick}
                 type="button"
