@@ -51,7 +51,7 @@ router.post('/register', (req, res) => {
                     email: newUserBcrptyed.email
                 }
 
-                jwt.sign({ newUser: newUser.firstName + newUser.lastName }, process.env.JWT_SECRET, { expiresIn: '24h' }, (err, token) => {
+                jwt.sign({ user: newUser.firstName + " " + newUser.lastName }, process.env.JWT_SECRET, { expiresIn: '24h' }, (err, token) => {
                     res.header('Access-Control-Expose-Headers', '*')
                     res.header('x-auth-token', token);
     
@@ -81,7 +81,7 @@ router.post('/login', (req, res) => {
             if (!isMatch) return res.status(400).send(`Error: Incorrect Password!`)
 
             //get JWT and add it to header
-            jwt.sign({ user: user.firstName + user.lastName }, process.env.JWT_SECRET, { expiresIn: '1h' }, (err, token) => {
+            jwt.sign({ user: user.firstName + " " + user.lastName }, process.env.JWT_SECRET, { expiresIn: '1h' }, (err, token) => {
                 res.header('Access-Control-Expose-Headers', '*')
                 res.header('x-auth-token', token);
 

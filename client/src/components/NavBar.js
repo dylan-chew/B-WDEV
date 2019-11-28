@@ -7,16 +7,31 @@ const NavBar = props => {
   let registerButton = null;
   if (auth.isAuthenticated()) {
     authButton = (
-      <button
-        className="btn btn-primary"
-        onClick={() => {
-          auth.logout(() => {
-            props.history.push("/");
-          });
-        }}
-      >
-        Logout
-      </button>
+      <li className="nav-item dropdown">
+        <a
+          className="nav-link dropdown-toggle"
+          href="/#"
+          id="dropdown07"
+          data-toggle="dropdown"
+          aria-haspopup="true"
+          aria-expanded="false"
+        >
+          Welcome {auth.getCurrentUser()}
+        </a>
+        <div className="dropdown-menu" aria-labelledby="dropdown07">
+          <a
+            className="dropdown-item"
+            href="/#"
+            onClick={() => {
+              auth.logout(() => {
+                props.history.push("/");
+              });
+            }}
+          >
+            Logout
+          </a>
+        </div>
+      </li>
     );
   } else {
     authButton = (
@@ -29,7 +44,7 @@ const NavBar = props => {
       <Link className="btn btn-secondary" to="/register">
         Register
       </Link>
-    )
+    );
   }
 
   return (
@@ -75,7 +90,7 @@ const NavBar = props => {
               </a>
             </li>
             <li className="nav-item">
-              <Link className="nav-link" to='/create'>
+              <Link className="nav-link" to="/create">
                 Add New Film
               </Link>
             </li>
@@ -107,8 +122,10 @@ const NavBar = props => {
                 </a>
               </div>
             </li>
-            <li>{authButton}</li>
-            <li>{registerButton}</li>
+          </ul>
+          <ul className="navbar-nav ml-auto">
+            {authButton}
+            <li className="nav-item">{registerButton}</li>
           </ul>
         </div>
       </div>

@@ -1,4 +1,6 @@
 import Axios from "axios";
+// const jwt = require('jsonwebtoken');
+const jwtdecode = require('jwt-decode') ;
 
 class Auth {
   constructor() {
@@ -43,6 +45,14 @@ class Auth {
 
   isAuthenticated() {
     return this.authenticated;
+  }
+
+  getCurrentUser() {
+    const tokenToDecode = localStorage.getItem('JWT');
+    
+    const decoded = jwtdecode(tokenToDecode)
+
+    return decoded.user
   }
 }
 
