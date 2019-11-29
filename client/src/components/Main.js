@@ -10,6 +10,8 @@ class Main extends React.Component {
     this.state = {
       film: [],
       searchString: "",
+      searchedString: "",
+      searched: false,
       errors: {}
     };
   }
@@ -20,7 +22,8 @@ class Main extends React.Component {
       .then(response => response.json())
       .then(data =>
         this.setState({
-          film: data
+          film: data,
+          searched: false
         })
       )
       .catch(err => console.error("Caught error: ", err));
@@ -37,11 +40,17 @@ class Main extends React.Component {
   };
 
   handleClickSearch(searchString) {
-    console.log(searchString);
-    Axios.get(`${process.env.REACT_APP_API_URI}/film/search/${searchString}`)
+    Axios.get(`${process.env.REACT_APP_API_URI}/film/${searchString}`)
       .then(response => {
         if (response.status === 200) {
-          this.setState({ film: response.data });
+          this.setState({
+            film: response.data,
+            searched: true,
+            searchedString: searchString
+          });
+        }
+        if (!searchString) {
+          this.setState({ searched: false });
         }
       })
       .catch(err => console.log(err));
@@ -111,6 +120,13 @@ class Main extends React.Component {
                   </button>
                 </div>
               </div>
+              {this.state.searched ? (
+                <div>
+                  <h2>Results for: "{this.state.searchedString}"</h2>
+                </div>
+              ) : (
+                ""
+              )}
             </div>
           </section>
         </div>

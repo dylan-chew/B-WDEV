@@ -17,16 +17,16 @@ router.get("/", (req, res) => {
 });
 
 //GET ONE FILM 5d9d053f2a5147c37ddae417
-router.get("/:_id", (req, res) => {
-  Film.findById(req.params._id, (err, film) => {
-    if (err) return res.status(400).send("Error");
+// router.get("/:_id", (req, res) => {
+//   Film.findById(req.params._id, (err, film) => {
+//     if (err) return res.status(400).send("Error");
 
-    //handle no film found
-    if (!film) return res.status(404).send();
+//     //handle no film found
+//     if (!film) return res.status(404).send();
 
-    res.send(film);
-  });
-});
+//     res.send(film);
+//   });
+// });
 
 //CREATE FILM
 router.post("/", verifyJwt, (req, res) => {
@@ -80,9 +80,9 @@ router.delete("/:_id", verifyJwt, (req, res) => {
   });
 });
 
+
 //SEARCH BY BRAND NAME
-router.get("/search/:brand", (req, res) => {
-    console.log(req.params.brand)
+router.get("/:brand", (req, res) => {
   Film.find({ brand: { '$regex' : req.params.brand, '$options' : 'i' } }, (err, film) => {
     if (err) return res.status(400).send("Error");
 
