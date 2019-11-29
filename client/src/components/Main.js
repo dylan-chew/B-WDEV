@@ -8,7 +8,9 @@ class Main extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      film: []
+      film: [],
+      searchString: "",
+      errors: {}
     };
   }
 
@@ -22,6 +24,27 @@ class Main extends React.Component {
         })
       )
       .catch(err => console.error("Caught error: ", err));
+  }
+
+  handleChange = e => {
+    this.setState({ errors: {} });
+
+    const { name, value } = e.target;
+
+    this.setState({
+      [name]: value
+    });
+  };
+
+  handleClickSearch(searchString) {
+    console.log(searchString);
+    Axios.get(`${process.env.REACT_APP_API_URI}/film/search/${searchString}`)
+      .then(response => {
+        if (response.status === 200) {
+          this.setState({ film: response.data });
+        }
+      })
+      .catch(err => console.log(err));
   }
 
   handleClickDelete(filmId) {
@@ -69,12 +92,21 @@ class Main extends React.Component {
             <div className="container">
               <div className="input-group">
                 <input
+                  id="searchString"
+                  name="searchString"
+                  onChange={this.handleChange}
                   type="text"
                   className="form-control"
-                  placeholder="Search this site"
+                  placeholder="Search by Brand"
                 />
                 <div className="input-group-append">
-                  <button className="btn btn-secondary" type="button">
+                  <button
+                    onClick={() =>
+                      this.handleClickSearch(this.state.searchString)
+                    }
+                    className="btn btn-secondary"
+                    type="button"
+                  >
                     <i className="fa fa-search"></i>
                   </button>
                 </div>
