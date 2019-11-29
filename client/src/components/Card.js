@@ -1,5 +1,6 @@
 import React from "react";
 import { Link } from "react-router-dom";
+import auth from "../services/auth";
 
 const Card = props => {
   return (
@@ -26,26 +27,32 @@ const Card = props => {
               >
                 View
               </button>
-              <Link className="btn btn-sm btn-outline-secondary"
-               to={{
-                 pathname: '/edit',
-                 filmProps: {
-                   name: props.name,
-                   brand: props.brand,
-                   ISO: props.iso,
-                   id: props.id,
-                   img_path: props.imgPath
-                 }
-               }}>
+              <Link
+                className="btn btn-sm btn-outline-secondary"
+                to={{
+                  pathname: "/edit",
+                  filmProps: {
+                    name: props.name,
+                    brand: props.brand,
+                    ISO: props.iso,
+                    id: props.id,
+                    img_path: props.imgPath
+                  }
+                }}
+              >
                 Edit
               </Link>
-              <button
-                onClick={props.onClick}
-                type="button"
-                className="btn btn-sm btn-outline-secondary"
-              >
-                Delete
-              </button>
+              {auth.isAuthenticated() ? (
+                <button
+                  onClick={props.onClick}
+                  type="button"
+                  className="btn btn-sm btn-outline-secondary"
+                >
+                  Delete
+                </button>
+              ) : (
+                ""
+              )}
             </div>
           </div>
         </div>

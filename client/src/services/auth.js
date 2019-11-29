@@ -1,10 +1,11 @@
 import Axios from "axios";
 // const jwt = require('jsonwebtoken');
-const jwtdecode = require('jwt-decode') ;
+const jwtdecode = require('jwt-decode');
+const {exp} = jwtdecode(localStorage.getItem('JWT'))
 
 class Auth {
   constructor() {
-    if (localStorage.getItem("JWT")) {
+    if (localStorage.getItem("JWT") && exp > Date.now()/1000) {
       this.authenticated = true;
     } else {
       this.authenticated = false;
