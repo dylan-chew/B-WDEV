@@ -9,10 +9,10 @@ class CreateForm extends React.Component {
 
     this.state = {
       filmAttr: {
-        name: "",
-        brand: "",
-        ISO: "",
-        image_path: ""
+        name: this.props.location.filmProps.name,
+        brand: this.props.location.filmProps.brand,
+        ISO: this.props.location.filmProps.ISO,
+        image_path: this.props.location.filmProps.img_path
       },
       errors: {}
     };
@@ -59,7 +59,6 @@ class CreateForm extends React.Component {
 
   handleSubmit = e => {
     e.preventDefault();
-    return console.log(this.props.location.filmProps)
 
     //validate
     const errors = this.validate();
@@ -72,9 +71,13 @@ class CreateForm extends React.Component {
       }
     };
 
-    Axios.put(`${process.env.REACT_APP_API_URI}/film`, this.state.filmAttr, config)
+    Axios.put(
+      `${process.env.REACT_APP_API_URI}/film/${this.props.location.filmProps.id}`,
+      this.state.filmAttr,
+      config
+    )
       .then(response => {
-        if (response.status === 201) {
+        if (response.status === 200) {
           //redirect somewhere
           this.props.history.push("/");
         }
@@ -107,7 +110,7 @@ class CreateForm extends React.Component {
           name="name"
           id="inputName"
           className="form-control"
-          value={this.props.location.filmProps.name}
+          value={this.state.filmAttr.name}
           onChange={this.handleChange}
           autoFocus
         />
@@ -120,7 +123,7 @@ class CreateForm extends React.Component {
           name="brand"
           id="inputBrand"
           className="form-control"
-          value={this.props.location.filmProps.brand}
+          value={this.state.filmAttr.brand}
         />
         <label htmlFor="inputIso" className="sr-only">
           Brand
@@ -131,7 +134,7 @@ class CreateForm extends React.Component {
           name="ISO"
           id="inputIso"
           className="form-control"
-          value={this.props.location.filmProps.ISO}
+          value={this.state.filmAttr.ISO}
         />
         <label htmlFor="inputImgUrl" className="sr-only">
           Brand
@@ -142,10 +145,10 @@ class CreateForm extends React.Component {
           name="image_path"
           id="inputImgUrl"
           className="form-control"
-          value={this.props.location.filmProps.img_path}
+          value={this.state.filmAttr.image_path}
         />
         <button className="btn btn-lg btn-primary btn-block" type="submit">
-          Create
+          Update
         </button>
         {Object.keys(this.state.errors).length > 0 && (
           <div className="alert alert-danger">
