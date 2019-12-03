@@ -89,7 +89,7 @@ const NavBar = props => {
                 Add New Film
               </Link>
             </li>
-            <li className="nav-item">
+            {/* <li className="nav-item">
               <a className="nav-link disabled" href="/#">
                 Disabled
               </a>
@@ -116,7 +116,7 @@ const NavBar = props => {
                   Something else here
                 </a>
               </div>
-            </li>
+            </li> */}
           </ul>
           <ul className="navbar-nav ml-auto">
             {authButton}

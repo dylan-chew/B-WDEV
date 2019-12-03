@@ -44,7 +44,7 @@ router.post('/register', (req, res) => {
             const newUser = new User(newUserBcrptyed)
 
             newUser.save((err, newUserBcrptyed) => {
-                if (err) return res.status(400).send(`Error: ${err.message}`)
+                if (err) return res.status(400).send(`${err.message}`)
 
                 returnJson = {
                     id: newUserBcrptyed.id,

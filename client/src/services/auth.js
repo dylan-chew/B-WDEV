@@ -1,12 +1,15 @@
 import Axios from "axios";
 // const jwt = require('jsonwebtoken');
-const jwtdecode = require('jwt-decode');
-const {exp} = jwtdecode(localStorage.getItem('JWT'))
+const jwtdecode = require("jwt-decode");
 
 class Auth {
   constructor() {
-    if (localStorage.getItem("JWT") && exp > Date.now()/1000) {
-      this.authenticated = true;
+    if (localStorage.getItem("JWT")) {
+      const { exp } = jwtdecode(localStorage.getItem("JWT"));
+
+      if (exp > Date.now() / 1000) {
+        this.authenticated = true;
+      }
     } else {
       this.authenticated = false;
     }
@@ -22,7 +25,7 @@ class Auth {
           cb();
         }
       })
-      .catch(err => console.log(err));
+      .catch(err => cb(err));
   }
 
   logout(cb) {
@@ -41,7 +44,7 @@ class Auth {
           cb();
         }
       })
-      .catch(err => console.log(err));
+      .catch(err => cb(err));
   }
 
   isAuthenticated() {
@@ -49,11 +52,11 @@ class Auth {
   }
 
   getCurrentUser() {
-    const tokenToDecode = localStorage.getItem('JWT');
-    
-    const decoded = jwtdecode(tokenToDecode)
+    const tokenToDecode = localStorage.getItem("JWT");
 
-    return decoded.user
+    const decoded = jwtdecode(tokenToDecode);
+
+    return decoded.user;
   }
 }
 

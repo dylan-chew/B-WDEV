@@ -65,7 +65,10 @@ class SignIn extends React.Component {
     if (errors) return; //abort the submit
 
     auth.register(this.state.credentials, (err, response) => {
-      if (err) return console.log(err);
+      if (err) {
+        this.setState({ errors: { email: "Email already exists" } });
+        return;
+      }
 
       this.props.history.push("/");
     });

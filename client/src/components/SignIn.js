@@ -58,7 +58,10 @@ class SignIn extends React.Component {
     if (errors) return; //abort the submit
 
     auth.login(this.state.credentials, (err, response) => {
-      if (err) return console.log(err);
+      if (err) {
+        this.setState({ errors: { email: "Incorrect Email or Password" } });
+        return;
+      }
 
       this.props.history.push("/");
     });
